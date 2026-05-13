@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Player;
 
 class Team extends Model
 {
@@ -16,4 +17,9 @@ class Team extends Model
         'logo',
         'is_active',
     ];
+
+    public function players()
+    {
+        return $this->hasMany(Player::class);
+    }
 }

@@ -10,7 +10,11 @@ class TeamController extends Controller
 {
     public function index()
     {
-        return response()->json(Team::orderBy('name')->get());
+        return response()->json(
+    Team::with('players')
+        ->orderBy('name')
+        ->get()
+);
     }
 
     public function store(Request $request)
