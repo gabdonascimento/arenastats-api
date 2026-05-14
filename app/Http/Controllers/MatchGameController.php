@@ -72,4 +72,17 @@ class MatchGameController extends Controller
             'message' => 'Partida excluída com sucesso.'
         ]);
     }
+
+    public function timeline(MatchGame $match)
+    {
+        $events = $match->events()
+            ->with(['team', 'player', 'assistPlayer'])
+            ->orderBy('minute')
+            ->get();
+
+        return response()->json([
+            'match' => $match->load(['competition', 'homeTeam', 'awayTeam']),
+            'timeline' => $events
+        ]);
+    }
 }

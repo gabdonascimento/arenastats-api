@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Team;
 use App\Models\Competition;
+use App\Models\MatchEvent;
 
 class MatchGame extends Model
 {
@@ -32,5 +33,10 @@ class MatchGame extends Model
     public function competition()
     {
         return $this->belongsTo(Competition::class);
+    }
+
+    public function events()
+    {
+        return $this->hasMany(MatchEvent::class);
     }
 }
