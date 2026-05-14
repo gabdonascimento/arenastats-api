@@ -10,7 +10,7 @@ class MatchGameController extends Controller
     public function index()
     {
         return response()->json(
-            MatchGame::with(['competition', 'homeTeam', 'awayTeam'])
+            MatchGame::with(['competition', 'round', 'homeTeam', 'awayTeam'])
                 ->orderBy('match_date')
                 ->get()
         );
@@ -20,6 +20,7 @@ class MatchGameController extends Controller
     {
         $data = $request->validate([
             'competition_id' => 'nullable|exists:competitions,id',
+            'round_id' => 'nullable|exists:rounds,id',
             'home_team_id' => 'required|exists:teams,id|different:away_team_id',
             'away_team_id' => 'required|exists:teams,id',
             'match_date' => 'required|date',
@@ -37,17 +38,22 @@ class MatchGameController extends Controller
         );
     }
 
-    public function show(MatchGame $matchGame)
+    public function show(MatchGame $match)
     {
         return response()->json(
-            $matchGame->load(['homeTeam', 'awayTeam'])
+            $match->load([
+                'competition',
+                'round',
+                'homeTeam',
+                'awayTeam'
+            ])
         );
     }
-
-    public function update(Request $request, MatchGame $matchGame)
+    public function update(Request $request, MatchGame $match)
     {
         $data = $request->validate([
             'competition_id' => 'nullable|exists:competitions,id',
+            'round_id' => 'nullable|exists:rounds,id',
             'home_team_id' => 'sometimes|required|exists:teams,id|different:away_team_id',
             'away_team_id' => 'sometimes|required|exists:teams,id',
             'match_date' => 'sometimes|required|date',
@@ -57,16 +63,16 @@ class MatchGameController extends Controller
             'stadium' => 'nullable|string|max:255',
         ]);
 
-        $matchGame->update($data);
+        $match->update($data);
 
         return response()->json(
-            $matchGame->load(['homeTeam', 'awayTeam'])
+            $match->load(['competition', 'round', 'homeTeam', 'awayTeam'])
         );
     }
 
-    public function destroy(MatchGame $matchGame)
+    public function destroy(MatchGame $match)
     {
-        $matchGame->delete();
+        $match->delete();
 
         return response()->json([
             'message' => 'Partida excluída com sucesso.'

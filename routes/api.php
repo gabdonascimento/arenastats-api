@@ -8,12 +8,15 @@ use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\StandingController;
 use App\Http\Controllers\MatchEventController;
 use App\Http\Controllers\StatisticController;
+use App\Http\Controllers\RoundController;
 
 Route::apiResource('teams', TeamController::class);
 Route::apiResource('players', PlayerController::class);
 Route::apiResource('matches', MatchGameController::class);
 Route::apiResource('competitions', CompetitionController::class);
 Route::apiResource('match-events', MatchEventController::class)
+    ->only(['index', 'store', 'show', 'destroy']);
+Route::apiResource('rounds', RoundController::class)
     ->only(['index', 'store', 'show', 'destroy']);
 
 Route::get(

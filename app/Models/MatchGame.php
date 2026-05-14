@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Team;
 use App\Models\Competition;
 use App\Models\MatchEvent;
+use App\Models\Round;
 
 class MatchGame extends Model
 {
     protected $fillable = [
         'competition_id',
+        'round_id',
         'home_team_id',
         'away_team_id',
         'match_date',
@@ -38,5 +40,10 @@ class MatchGame extends Model
     public function events()
     {
         return $this->hasMany(MatchEvent::class);
+    }
+
+    public function round()
+    {
+        return $this->belongsTo(Round::class);
     }
 }
